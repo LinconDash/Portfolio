@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Video Player</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+.video-btn {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensures the popup is on top of other elements */
+}
+
+.popup video {
+    max-width: 90%;
+    max-height: 80%;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <!-- Buttons to trigger video popup -->
+    <button class="video-btn" data-video="video1.mp4">Play Video 1</button>
+    <button class="video-btn" data-video="video2.mp4">Play Video 2</button>
+    <button class="video-btn" data-video="video3.mp4">Play Video 3</button>
+    <!-- Add more buttons as needed -->
+
+    <!-- Popup container -->
+    <div id="video-popup" class="popup">
+        <span id="close-popup" class="close">&times;</span>
+        <video id="video-player" controls>
+            <source id="video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.video-btn');
+        const popup = document.getElementById('video-popup');
+        const closePopup = document.getElementById('close-popup');
+        const videoPlayer = document.getElementById('video-player');
+        const videoSource = document.getElementById('video-source');
+    
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const videoUrl = this.getAttribute('data-video');
+                videoSource.src = videoUrl;
+                videoPlayer.load(); // Load the new video
+                popup.style.display = 'flex'; // Show the popup
+                videoPlayer.play(); // Automatically play the video
+            });
+        });
+    
+        closePopup.addEventListener('click', function() {
+            popup.style.display = 'none';
+            videoPlayer.pause(); // Pause the video when closing the popup
+        });
+    
+        // Close popup when clicking outside of the video player
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                popup.style.display = 'none';
+                videoPlayer.pause(); // Pause the video when clicking outside
+            }
+        });
+    });
+    </script>
+</body>
+</html>
